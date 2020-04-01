@@ -56,12 +56,24 @@ class NewsViewPagination(LimitOffsetPagination):
     default_limit = 2
     max_limit = 3
 
+class PaginatedListView(generics.ListAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+    paginate_by = 10
+    paginate_by_param = 'page_size'
+    max_paginate_by = 100
+
 class NewscategoriesAPIView(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = News.objects.all()
     serializer_class = NewsSerializer
     pagination_class = NewsViewPagination
 
-
-
-
-
+    def get_queryset(self):
+        queryset=News.objects.all()
+        categories=self.request.query_params.get('category','')
+        print(categories)
+        if categories is not None:
+            queryset=queryset.filter(category=categories)
+        return queryset

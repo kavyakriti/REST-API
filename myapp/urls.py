@@ -21,8 +21,7 @@ from myblog import views
 urlpatterns = [
     path('admin/', admin.site.urls), 
     path('auth/', include('myblog.urls')),
-    path('news/', views.NewscategoriesAPIView.as_view()), 
-
+    
 ]
 
 

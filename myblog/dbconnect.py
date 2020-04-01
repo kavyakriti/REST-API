@@ -24,7 +24,7 @@ try:
     connection = mysql.connector.connect(host = HOST, user = USER, passwd = PASSWORD, db = DATABASE, charset = "utf8")
     cursor = connection.cursor()
     newsapi = NewsApiClient(api_key=config('API_KEY'))
-    categories=['entertainment','sports','business']
+    categories=['business','sports','entertainment']
     for c in categories:
       topheadlines = newsapi.get_top_headlines(category=c, language='en', country='in')
       articles = topheadlines['articles']
@@ -38,7 +38,7 @@ try:
         timestamp = a['publishedAt']
         content = a['content']
         category=c
-    News.objects.create(category=category,source=source,author=author,title=title,description=description,url=url,urlToImage=urltoimage,publishedAt=timestamp,content=content)
+        News.objects.create(category=category,source=source,author=author,title=title,description=description,url=url,urlToImage=urltoimage,publishedAt=timestamp,content=content)
     connection.commit()
 
 except mysql.connector.Error as error:
